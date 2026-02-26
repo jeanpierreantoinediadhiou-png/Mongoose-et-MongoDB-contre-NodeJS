@@ -20,18 +20,19 @@ const connectDB = async () => {
       return;
     }
 
+    // Se connecter avec l'URI. Les options historiques `useNewUrlParser`
+    // et `useUnifiedTopology` sont gérées automatiquement par les versions
+    // récentes de Mongoose, les passer explicitement peut causer des erreurs.
     await mongoose.connect(uri);
 
     // Message affiché si la connexion réussit
-    console.log("Connexion à MongoDB réussie ✅");
+    console.log('Connexion à MongoDB réussie ✅');
 
   } catch (error) {
 
-    // Si une erreur se produit, elle sera affichée ici
-    console.error("Erreur de connexion ❌", error);
-
-    // Ne pas arrêter le serveur automatiquement pour permettre le debug
-    // Le serveur pourra fonctionner en mode dégradé (sans DB)
+    // Si une erreur se produit, l'afficher puis la repropager
+    console.error('Erreur de connexion ❌', error);
+    throw error; // repropager pour que l'appelant puisse gérer la rejection
 
   }
 
